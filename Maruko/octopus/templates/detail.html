@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>detail</title>
+</head>
+<body>
+<h1>{{ question.question_text }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'polls:vote' question.id %}" method="post">
+    {% csrf_token %}
+    {% for choice in question.choice_set.all %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"/>
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br/>
+    {% endfor %}
+    <input type="submit" value="Vote"/>
+</form>
+</body>
+<script>
+    window.onload = function () {
+        var vm = new Vue({
+            el: '#box',
+            data: {
+                msg: 'Hello World!',
+            },
+            methods: {
+                get: function () {
+                    //发送get请求
+                    this.$http.get('http://127.0.0.1:8000/keys').then(function (res) {
+                        document.write(res.body);
+                    }, function () {
+                        console.log('请求失败处理');
+                    });
+                }
+            }
+        });
+    }
+</script>
+</html>
